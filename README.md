@@ -1,2 +1,2 @@
 # tracker
-Simple work tracker for desktop in GO
+Simple time tracker for desktop in GO, with notification and alerts
