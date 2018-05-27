@@ -9,41 +9,19 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/AllenDang/w32"
+  name = "github.com/gen2brain/dlgs"
   packages = ["."]
-  revision = "ad0a36d80adcd081d5c0dded8e97a009b486d1db"
+  revision = "01a5f5a61d1883f3329fac666200c6f573f5196e"
 
 [[projects]]
   branch = "master"
-  name = "github.com/mattn/go-gtk"
-  packages = [
-    "gdk",
-    "gdkpixbuf",
-    "gio",
-    "glib",
-    "gtk",
-    "pango"
-  ]
-  revision = "0c9f6816f4f58cfdf8e67bb015f838bd05ea27b1"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/mattn/go-pointer"
-  packages = ["."]
-  revision = "1d30dc4b6f28271a3bd126071d4d0363e618415b"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/sqweek/dialog"
-  packages = [
-    ".",
-    "cocoa"
-  ]
-  revision = "2f9d9e5dd848a3bad4bdd0210c73bb90c13a3791"
+  name = "github.com/gopherjs/gopherjs"
+  packages = ["js"]
+  revision = "8dffc02ea1cb8398bb73f30424697c60fcf8d4c5"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "1a86846177cc822c4cd030dc62eba9e679c1c48fe54f21ab7b9075f7435e015b"
+  inputs-digest = "c573cc4e21db3a8f6e6e23d30c39f1d2e54a384e8264c6bf60c5f1ad304a6fa6"
   solver-name = "gps-cdcl"
   solver-version = 1
