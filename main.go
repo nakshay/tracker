@@ -10,6 +10,7 @@ import (
 )
 
 var totalOverdue time.Duration
+var timeBuffer time.Duration
 
 func main() {
 
@@ -18,49 +19,64 @@ func main() {
 		low
 	)
 
+	//loader := []string{"akshay naik"}
+
 	notify("Tracker", "Work tracking started", "", low)
 
-	shortBreak := time.Second * 5
-	longBreak := time.Second * 10
+	fmt.Println("Time tracking started")
+
+	timeBuffer = time.Second * 10 // buffer to resume work
+
+	shortBreakHour := time.Second * 30    // After shortBreakHour short break will start
+	shortBreakAllowed := time.Second * 10 // Short break allowed for shortBreakAllowed duration
+
+	longBreakHour := time.Second * 60    // After shortBreakHour long break will start
+	longBreakAllowed := time.Second * 20 // Long break allowed for longBreakAllowed duration
 
 	// Create channel for timers
-	short := time.After(shortBreak)
-	long := time.After(longBreak)
+	short := time.After(shortBreakHour)
+	long := time.After(longBreakHour)
 
 	for {
 		select {
+		case <-long:
+
+			notify("Tracker", "Time to take a long break", "", low)
+
+			// ask to resume work after long break expired
+			time.AfterFunc(longBreakAllowed, resumeWork)
+
+			if confirm() {
+				fmt.Println("\nYour total time Overdue ", totalOverdue)
+				os.Exit(1)
+			} else {
+				// re-initialize timer
+				long = time.After(longBreakHour)
+			}
 		case <-short:
 
 			// re-initialize timer
-			short = time.After(shortBreak)
+			short = time.After(shortBreakHour)
 
 			notify("Tracker", "Time to take a short break", "", low)
 
 			// ask to resume work after short break expired
-			time.AfterFunc(shortBreak, resumeWork)
+			time.AfterFunc(shortBreakAllowed, resumeWork)
 
-		case <-long:
-			notify("Tracker", "Time to take a long break", "", low)
-
-			// ask to resume work after long break expired
-			time.AfterFunc(longBreak, resumeWork)
-
-			if confirm() {
-				os.Exit(1)
-			} else {
-				// re-initialize timer
-				long = time.After(longBreak)
-			}
 		default:
-			fmt.Println("default case")
+
+			for _, char := range `-\|/` {
+				fmt.Printf("\r%c ", char)
+				time.Sleep(time.Millisecond * 100)
+			}
+
 		}
 	}
 
 }
 
 func confirm() bool {
-	fmt.Println("function called")
-	//result := dialog.Message("%s", "Do you want to exit?").Title("Are you sure?").YesNo()
+
 	result, err := dialog.Question("Confirm", "Do you want to exit", true)
 	if err != nil {
 		log.Fatal("error occuered", err)
@@ -69,14 +85,20 @@ func confirm() bool {
 }
 
 func resumeWork() {
-	current := time.Now()
+	start := time.Now()
 	_, err := dialog.Warning("Break over", "Do you want to resume work")
 	if err != nil {
 		log.Fatal("error occuered", err)
 	}
 
-	totalOverdue = totalOverdue + time.Since(current)
+	Overdue := time.Since(start)
+	if Overdue > timeBuffer {
+		totalOverdue += Overdue - timeBuffer
+	} else {
+		totalOverdue += 0 * time.Second
+	}
 
-	fmt.Println(totalOverdue)
+	fmt.Println("\nYour time Overdue till now ", totalOverdue)
+	fmt.Println("Time tracking Resumed")
 
 }
