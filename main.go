@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -19,19 +20,30 @@ func main() {
 		low
 	)
 
-	//loader := []string{"akshay naik"}
+	var timeBuffer time.Duration
+	var shortBreakHour time.Duration
+	var shortBreakAllowed time.Duration
+	var longBreakHour time.Duration
+	var longBreakAllowed time.Duration
+
+	// buffer to resume work
+	flag.DurationVar(&timeBuffer, "buffer", time.Second*10, "To provide additional buffer")
+
+	// After shortBreakHour short break will start
+	flag.DurationVar(&shortBreakHour, "shortBreakHour", time.Second*30, "To provide additional buffer")
+	// Short break allowed for shortBreakAllowed duration
+	flag.DurationVar(&shortBreakAllowed, "shortBreakAllowed", time.Second*10, "To provide additional buffer")
+
+	// After shortBreakHour long break will start
+	flag.DurationVar(&longBreakHour, "longBreakHour", time.Second*60, "To provide additional buffer")
+	// Long break allowed for longBreakAllowed duration
+	flag.DurationVar(&longBreakAllowed, "longBreakAllowed", time.Second*20, "To provide additional buffer")
+
+	flag.Parse()
 
 	notify("Tracker", "Work tracking started", "", low)
 
 	fmt.Println("Time tracking started")
-
-	timeBuffer = time.Second * 10 // buffer to resume work
-
-	shortBreakHour := time.Second * 30    // After shortBreakHour short break will start
-	shortBreakAllowed := time.Second * 10 // Short break allowed for shortBreakAllowed duration
-
-	longBreakHour := time.Second * 60    // After shortBreakHour long break will start
-	longBreakAllowed := time.Second * 20 // Long break allowed for longBreakAllowed duration
 
 	// Create channel for timers
 	short := time.After(shortBreakHour)
@@ -72,6 +84,14 @@ func main() {
 
 		}
 	}
+
+}
+
+func countShortBreak() {
+
+}
+
+func countLongBreak() {
 
 }
 
