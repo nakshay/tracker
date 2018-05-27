@@ -12,6 +12,10 @@ import (
 
 var totalOverdue time.Duration
 var timeBuffer time.Duration
+var shortBreakHour time.Duration
+var shortBreakAllowed time.Duration
+var longBreakHour time.Duration
+var longBreakAllowed time.Duration
 
 func main() {
 
@@ -19,12 +23,6 @@ func main() {
 		high = iota
 		low
 	)
-
-	var timeBuffer time.Duration
-	var shortBreakHour time.Duration
-	var shortBreakAllowed time.Duration
-	var longBreakHour time.Duration
-	var longBreakAllowed time.Duration
 
 	// buffer to resume work
 	flag.DurationVar(&timeBuffer, "buffer", time.Second*10, "To provide additional buffer")
@@ -55,9 +53,6 @@ func main() {
 
 			notify("Tracker", "Time to take a long break", "", low)
 
-			// ask to resume work after long break expired
-			time.AfterFunc(longBreakAllowed, resumeWork)
-
 			if confirm() {
 				fmt.Println("\nYour total time Overdue ", totalOverdue)
 				os.Exit(1)
@@ -87,33 +82,33 @@ func main() {
 
 }
 
-func countShortBreak() {
-
-}
-
-func countLongBreak() {
-
-}
-
 func confirm() bool {
 
-	result, err := dialog.Question("Confirm", "Do you want to exit", true)
+	result, err := dialog.Question("Press No for exit", "Do you want to resume work or exit?", false)
 	if err != nil {
 		log.Fatal("error occuered", err)
 	}
-	return result
+
+	if !result {
+		return true
+	} else {
+		// ask to resume work after long break expired
+		time.AfterFunc(longBreakAllowed, resumeWork)
+		return false
+	}
 }
 
 func resumeWork() {
+
 	start := time.Now()
 	_, err := dialog.Warning("Break over", "Do you want to resume work")
 	if err != nil {
 		log.Fatal("error occuered", err)
 	}
 
-	Overdue := time.Since(start)
-	if Overdue > timeBuffer {
-		totalOverdue += Overdue - timeBuffer
+	overdue := time.Since(start)
+	if overdue > timeBuffer {
+		totalOverdue += overdue - timeBuffer
 	} else {
 		totalOverdue += 0 * time.Second
 	}
