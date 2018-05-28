@@ -26,6 +26,7 @@ func main() {
 
 	totalShortBreaks := 0
 	totalLongBreaks := 0
+	log := ""
 
 	// buffer to resume work
 	flag.DurationVar(&timeBuffer, "buffer", time.Second*10, "To provide additional buffer")
@@ -57,23 +58,30 @@ func main() {
 			// skip one short break when long break hits
 			go skipShortBreak(short)
 
-			notify("Tracker", "Time to take a long break", "", low)
+			notify("Tracker", "Long break started", "", low)
+
+			fmt.Println("Long break started")
 
 			if confirm() {
 				fmt.Println("\nYour total time Overdue ", totalOverdue)
 				fmt.Printf("Total short breaks teaken %d\n", totalShortBreaks)
-				fmt.Printf("Total short breaks teaken %d\n", totalLongBreaks)
+				fmt.Printf("Total Long breaks teaken %d\n", totalLongBreaks)
+				fmt.Println("Summery: ")
+				fmt.Println(log)
 				os.Exit(1)
 			} else {
 				// re-initialize timer
 				totalLongBreaks++
+				log += "Long break taken at " + time.Now().Format("01-JAN-2006 15:04:00")
 				long = time.After(longBreakHour)
 			}
 		case <-short:
 
-			notify("Tracker", "Time to take a short break", "", low)
+			notify("Tracker", "Short break started", "", low)
+			fmt.Println("Short break started")
 			totalShortBreaks++
 			// re-initialize timer
+			log += "Short break taken at " + time.Now().Format("01-JAN-2006 15:04:00")
 			short = time.After(shortBreakHour)
 
 			// ask to resume work after short break expired
