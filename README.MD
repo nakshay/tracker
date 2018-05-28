@@ -1,0 +1,1 @@
+Simple time tracker for desktop in GO

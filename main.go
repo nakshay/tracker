@@ -49,6 +49,7 @@ func main() {
 
 	// Create channel for timers
 	short := time.After(shortBreakHour)
+
 	long := time.After(longBreakHour)
 
 	for {
@@ -72,7 +73,7 @@ func main() {
 			} else {
 				// re-initialize timer
 				totalLongBreaks++
-				log += "Long break taken at " + time.Now().Format("01-JAN-2006 15:04:00")
+				log += "Long break taken at " + time.Now().Format("01-JAN-2006 15:04:00") + "\n"
 				long = time.After(longBreakHour)
 			}
 		case <-short:
@@ -81,7 +82,7 @@ func main() {
 			fmt.Println("Short break started")
 			totalShortBreaks++
 			// re-initialize timer
-			log += "Short break taken at " + time.Now().Format("01-JAN-2006 15:04:00")
+			log += "Short break taken at " + time.Now().Format("01-JAN-2006 15:04:00") + "\n"
 			short = time.After(shortBreakHour)
 
 			// ask to resume work after short break expired
