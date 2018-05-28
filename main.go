@@ -48,8 +48,8 @@ func main() {
 	fmt.Println("Time tracking started")
 
 	// Create channel for timers
-	short := time.After(shortBreakHour)
 
+	short := time.After(shortBreakHour)
 	long := time.After(longBreakHour)
 
 	for {
@@ -89,15 +89,12 @@ func main() {
 			time.AfterFunc(shortBreakAllowed, resumeWork)
 
 		default:
-
 			for _, char := range `-\|/` {
 				fmt.Printf("\r%c ", char)
 				time.Sleep(time.Millisecond * 100)
 			}
-
 		}
 	}
-
 }
 
 func confirm() bool {
