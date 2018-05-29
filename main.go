@@ -32,14 +32,14 @@ func main() {
 	flag.DurationVar(&timeBuffer, "buffer", time.Second*10, "To provide additional buffer")
 
 	// After shortBreakHour short break will start
-	flag.DurationVar(&shortBreakHour, "shortBreakHour", time.Second*30, "To provide additional buffer")
+	flag.DurationVar(&shortBreakHour, "shortBreakHour", time.Hour, "To provide additional buffer")
 	// Short break allowed for shortBreakAllowed duration
-	flag.DurationVar(&shortBreakAllowed, "shortBreakAllowed", time.Second*10, "To provide additional buffer")
+	flag.DurationVar(&shortBreakAllowed, "shortBreakAllowed", time.Minute*5, "To provide additional buffer")
 
 	// After shortBreakHour long break will start
-	flag.DurationVar(&longBreakHour, "longBreakHour", time.Second*60, "To provide additional buffer")
+	flag.DurationVar(&longBreakHour, "longBreakHour", time.Hour*3, "To provide additional buffer")
 	// Long break allowed for longBreakAllowed duration
-	flag.DurationVar(&longBreakAllowed, "longBreakAllowed", time.Second*20, "To provide additional buffer")
+	flag.DurationVar(&longBreakAllowed, "longBreakAllowed", time.Minute*30, "To provide additional buffer")
 
 	flag.Parse()
 

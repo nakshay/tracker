@@ -29,14 +29,10 @@
   branch = "master"
   name = "github.com/0xAX/notificator"
 
-[prune]
-  go-tests = true
-  unused-packages = true
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/sqweek/dialog"
-
 [[constraint]]
   branch = "master"
   name = "github.com/gen2brain/dlgs"
+
+[prune]
+  go-tests = true
+  unused-packages = true
